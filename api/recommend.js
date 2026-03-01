@@ -50,19 +50,6 @@ export default async function handler(req, res) {
   }
 }
 
-const EXPLORATION_ANGLES = [
-  "explorando literaturas latinoamericanas, africanas o asiáticas poco representadas",
-  "priorizando autoras mujeres o voces históricamente marginadas",
-  "buscando óperas primas o segundas novelas de autores emergentes",
-  "enfocándote en obras publicadas en los últimos 15 años",
-  "rastreando joyas de culto con poca visibilidad mainstream",
-  "cruzando géneros de forma inesperada (ej: thriller filosófico, romance histórico experimental)",
-  "priorizando autores de Europa del Este, Escandinavia o el Mediterráneo",
-  "buscando en la periferia del canon: autores traducidos pero poco conocidos en habla hispana",
-  "con énfasis en estructuras narrativas no convencionales",
-  "explorando la tradición de un país o región literaria específica poco común",
-];
-
 function buildPrompt(books, movies, freeText, chips, qty, excludedBooks = []) {
   let context = "";
   if (books.length > 0 && movies.length > 0) {
@@ -74,15 +61,13 @@ function buildPrompt(books, movies, freeText, chips, qty, excludedBooks = []) {
   }
   if (freeText) context += ` Además: ${freeText}.`;
 
-  const filterPart = chips.length > 0 ? ` Preferencias específicas: ${chips.join(", ")}.` : "";
+  const filterPart = chips.length > 0 ? ` El usuario especificó estas preferencias, respetálas estrictamente: ${chips.join(", ")}.` : "";
 
   const exclusionPart = excludedBooks.length > 0
     ? ` IMPORTANTE: NO recomiendes ninguno de estos títulos que ya fueron mostrados: ${excludedBooks.slice(0, 40).join("; ")}. Buscá obras completamente distintas.`
     : "";
 
-  const angle = EXPLORATION_ANGLES[Math.floor(Math.random() * EXPLORATION_ANGLES.length)];
-
-  return `Sos un crítico literario y cinéfilo con conocimiento enciclopédico y gusto por lo poco convencional. ${context}${filterPart}${exclusionPart} Priorizá obras menos conocidas, joyas subestimadas y autores fuera del canon típico — evitá los títulos que aparecen en toda lista de recomendaciones estándar. En esta búsqueda, explorá ${angle}. Recomendá exactamente ${qty} libros. Respondé SOLO con JSON válido sin backticks ni markdown. Cada por_que: máximo 2 oraciones. Formato exacto: {"analisis":"una oración sobre el perfil del lector","libros":[{"titulo":"...","autor":"...","anio":"...","por_que":"...","conexion":"...","tags":["t1","t2","t3"]}]}`;
+  return `Sos un crítico literario y cinéfilo con conocimiento enciclopédico. ${context}${filterPart}${exclusionPart} Priorizá obras menos conocidas y joyas subestimadas — evitá los títulos que aparecen en toda lista de recomendaciones estándar. Recomendá exactamente ${qty} libros. Respondé SOLO con JSON válido sin backticks ni markdown. Cada por_que: máximo 2 oraciones. Formato exacto: {"analisis":"una oración sobre el perfil del lector","libros":[{"titulo":"...","autor":"...","anio":"...","por_que":"...","conexion":"...","tags":["t1","t2","t3"]}]}`;
 }
 
 function parseRobust(raw) {
