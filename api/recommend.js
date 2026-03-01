@@ -3,7 +3,7 @@ import { getDb } from "./_db.js";
 import { cors } from "./_auth.js";
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
-const DAILY_LIMIT = 5;
+const DAILY_LIMIT = 50;
 
 export default async function handler(req, res) {
   cors(res);
