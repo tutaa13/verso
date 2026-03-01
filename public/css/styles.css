@@ -631,9 +631,10 @@ h3 { font-size: 1.15rem; font-weight: 600; }
   border-radius: var(--radius-lg);
   width: 100%;
   max-width: 520px;
-  max-height: 92vh;
+  height: 90vh;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   box-shadow: var(--shadow-lg);
   transform: translateY(12px);
   transition: transform 0.2s;
