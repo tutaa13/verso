@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Descubrir — Verso</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <script>
+    (function(){ const t=localStorage.getItem("verso-theme")||"light"; document.documentElement.setAttribute("data-theme",t); })();
+  </script>
+</head>
+<body>
+
+<nav class="nav" id="main-nav"></nav>
+
+<div class="discover-layout">
+
+  <!-- SIDEBAR: inputs + filters -->
+  <aside class="discover-sidebar">
+
+    <!-- Books input -->
+    <div class="panel mb-2">
+      <div class="panel-title">Libros que amaste</div>
+      <div class="panel-sub">Ingresá títulos y presioná Enter</div>
+      <div class="tag-input-wrap" id="books-input-wrap">
+        <!-- tags injected by JS -->
+      </div>
+      <div class="input-hint mt-1">Ej: Un Caballero en Moscú, Normas de Cortesía</div>
+    </div>
+
+    <!-- Movies/series input -->
+    <div class="panel mb-2">
+      <div class="panel-title">Películas o series</div>
+      <div class="panel-sub">Ingresá títulos y presioná Enter</div>
+      <div class="tag-input-wrap" id="movies-input-wrap">
+        <!-- tags injected by JS -->
+      </div>
+      <div class="input-hint mt-1">Ej: The Godfather, Tinker Tailor Soldier Spy</div>
+    </div>
+
+    <!-- Free text -->
+    <div class="panel mb-2">
+      <div class="panel-title">¿Algo más?</div>
+      <div class="panel-sub">Describí en tus palabras qué estás buscando</div>
+      <textarea id="free-text" class="textarea" style="width:100%;" placeholder='Ej: "Quiero algo con la atmósfera de The Good Shepherd pero más íntimo..."'></textarea>
+    </div>
+
+    <!-- Filters -->
+    <div class="panel mb-2" id="filters-panel">
+      <div class="panel-title">Refinar búsqueda</div>
+      <div class="panel-sub">Cuanto más especificás, más precisas las recomendaciones.</div>
+      <div class="filter-groups" id="filter-groups">
+        <!-- injected by JS -->
+      </div>
+      <div style="margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid var(--border);">
+        <div class="filter-group-title">Cantidad de recomendaciones</div>
+        <div class="qty-row">
+          <input type="range" id="qty-range" min="3" max="10" value="5">
+          <span class="qty-display" id="qty-display">5</span>
+          <span class="text-muted text-sm">libros</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search button -->
+    <div class="search-btn-wrap">
+      <button class="btn btn-primary btn-lg btn-full" id="search-btn" disabled>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        Encontrar mis próximas lecturas
+      </button>
+      <div id="selection-summary" class="text-muted text-sm italic mt-1" style="text-align:center;"></div>
+    </div>
+
+    <!-- Rate limit note -->
+    <div style="margin-top:1rem;padding:0.75rem;background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);">
+      <div style="font-size:0.75rem;color:var(--muted);line-height:1.6;font-family:var(--font-mono);">
+        Límite: 5 búsquedas / día por usuario. Powered by Groq AI.
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- RESULTS -->
+  <main class="discover-results">
+    <div class="empty-discover" id="empty-state">
+      <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+      </svg>
+      <div style="font-family:var(--font-display);font-size:1.15rem;margin-bottom:0.5rem;color:var(--text-dim);">
+        Ingresá libros o películas que amaste
+      </div>
+      <div class="text-sm text-muted">Las recomendaciones aparecerán aquí</div>
+    </div>
+
+    <div class="loading-state hidden" id="loading-state">
+      Analizando tu perfil literario<span class="loading-dots"> · · ·</span>
+    </div>
+
+    <div class="hidden" id="error-state" style="border:1px solid var(--border);border-radius:var(--radius-lg);padding:2rem;text-align:center;color:var(--error);">
+      <div id="error-message"></div>
+      <button class="btn btn-ghost btn-sm mt-2" id="retry-btn">Intentar de nuevo</button>
+    </div>
+
+    <div class="hidden" id="results-container">
+      <div class="results-header">
+        <div class="eyebrow results-eyebrow">Tu perfil literario</div>
+        <div class="results-analysis" id="results-analysis"></div>
+      </div>
+      <div class="results-list" id="results-list"></div>
+    </div>
+  </main>
+
+</div>
+
+<script type="module" src="/js/discover.js"></script>
+</body>
+</html>

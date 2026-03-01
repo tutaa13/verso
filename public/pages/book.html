@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Libro — Verso</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <script>
+    (function(){ const t=localStorage.getItem("verso-theme")||"light"; document.documentElement.setAttribute("data-theme",t); })();
+  </script>
+</head>
+<body>
+
+<nav class="nav" id="main-nav"></nav>
+
+<!-- BOOK HEADER -->
+<div class="book-detail-header">
+  <div class="book-detail-header-inner">
+
+    <!-- Cover -->
+    <div id="cover-wrap">
+      <div class="book-cover-placeholder" id="cover-placeholder">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+        </svg>
+      </div>
+      <img class="book-cover-lg hidden" id="book-cover" alt="">
+    </div>
+
+    <!-- Info -->
+    <div style="flex:1;">
+      <div class="eyebrow mb-1" id="book-genre"></div>
+      <div class="book-detail-title" id="book-title">Cargando...</div>
+      <div class="book-detail-author" id="book-author"></div>
+
+      <!-- Community rating -->
+      <div class="flex items-center gap-1 mb-2" id="book-rating-row" style="margin-top:0.5rem;">
+        <div id="book-stars"></div>
+        <span class="text-muted text-sm" id="book-rating-count"></span>
+      </div>
+
+      <div class="book-detail-desc" id="book-desc"></div>
+
+      <!-- Actions -->
+      <div class="flex gap-1 mt-3" id="book-actions">
+        <button class="btn btn-primary" id="add-to-shelf-btn">
+          <svg width="15" height="15" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
+          </svg>
+          Agregar a mi estante
+        </button>
+        <a id="ol-link" href="#" target="_blank" rel="noreferrer" class="btn btn-secondary">
+          Open Library ↗
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div style="background:var(--bg);border-bottom:1px solid var(--border);position:sticky;top:var(--nav-h);z-index:50;">
+  <div class="shelf-tabs" style="max-width:var(--max-w);margin:0 auto;padding-left:1.5rem;">
+    <button class="shelf-tab active" data-tab="reviews">Reseñas</button>
+    <button class="shelf-tab" data-tab="readers">Lectores</button>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div style="max-width:var(--max-w);margin:0 auto;padding:2rem 1.5rem 5rem;display:grid;grid-template-columns:1fr 280px;gap:2rem;align-items:start;">
+
+  <main>
+    <!-- Reviews tab -->
+    <div id="tab-reviews">
+      <div class="flex justify-between items-center mb-2">
+        <div class="section-label">Reseñas de la comunidad</div>
+        <button class="btn btn-outline-accent btn-sm" id="write-review-btn">Escribir reseña</button>
+      </div>
+      <div id="reviews-list" class="results-list"></div>
+      <div class="empty-state hidden" id="reviews-empty">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+        <div class="empty-state-title">Sin reseñas todavía</div>
+        <div class="empty-state-sub">Sé el primero en escribir una.</div>
+      </div>
+    </div>
+
+    <!-- Readers tab -->
+    <div id="tab-readers" class="hidden">
+      <div class="section-label mb-2">Lectores en Verso</div>
+      <div id="readers-list" style="display:flex;flex-direction:column;gap:0.75rem;"></div>
+    </div>
+  </main>
+
+  <!-- Sidebar: stats -->
+  <aside style="position:sticky;top:calc(var(--nav-h) + 80px);">
+    <div class="card">
+      <div class="eyebrow mb-2">Este libro en Verso</div>
+      <div style="display:flex;flex-direction:column;gap:0.9rem;">
+        <div>
+          <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:600;" id="sidebar-rating">—</div>
+          <div class="text-muted text-xs">Puntuación promedio</div>
+        </div>
+        <div>
+          <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:600;" id="sidebar-reviews">—</div>
+          <div class="text-muted text-xs">Reseñas</div>
+        </div>
+        <div>
+          <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:600;" id="sidebar-readers">—</div>
+          <div class="text-muted text-xs">Lo leyeron</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+</div>
+
+<!-- WRITE REVIEW MODAL -->
+<div class="modal-overlay" id="review-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Tu reseña</div>
+      <button class="modal-close" id="review-modal-close">×</button>
+    </div>
+    <div class="field mb-2">
+      <label class="label">Puntuación</label>
+      <div id="review-star-input"></div>
+    </div>
+    <div class="field mb-2">
+      <label class="label">Reseña</label>
+      <textarea class="textarea" id="review-text" placeholder="¿Qué te pareció el libro?" style="width:100%;min-height:120px;"></textarea>
+    </div>
+    <div class="field mb-2">
+      <label class="label">Cita favorita <span class="text-muted">(opcional)</span></label>
+      <textarea class="textarea" id="review-quote" placeholder="Un fragmento que te marcó..." style="width:100%;min-height:70px;"></textarea>
+    </div>
+    <div id="review-modal-error" class="input-error hidden mb-1"></div>
+    <button class="btn btn-primary btn-full" id="submit-review-btn">Publicar reseña</button>
+  </div>
+</div>
+
+<div class="toast-container" id="toast-container"></div>
+
+<script type="module" src="/js/book.js"></script>
+</body>
+</html>

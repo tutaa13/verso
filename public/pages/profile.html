@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Perfil — Verso</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <script>
+    (function(){ const t=localStorage.getItem("verso-theme")||"light"; document.documentElement.setAttribute("data-theme",t); })();
+  </script>
+</head>
+<body>
+
+<nav class="nav" id="main-nav"></nav>
+
+<!-- PROFILE HEADER -->
+<div class="profile-header" id="profile-header">
+  <div class="profile-header-inner">
+    <!-- Avatar -->
+    <div class="profile-avatar-lg" id="profile-avatar">?</div>
+
+    <!-- Info -->
+    <div class="profile-info">
+      <div class="profile-display-name" id="profile-display-name">Cargando...</div>
+      <div class="profile-username" id="profile-username"></div>
+      <div class="profile-bio" id="profile-bio"></div>
+
+      <div class="flex items-center gap-2 mb-2">
+        <div class="profile-stats">
+          <div>
+            <div class="profile-stat-val" id="stat-finished">—</div>
+            <div class="profile-stat-label">Leídos</div>
+          </div>
+          <div>
+            <div class="profile-stat-val" id="stat-reading">—</div>
+            <div class="profile-stat-label">Leyendo</div>
+          </div>
+          <div>
+            <div class="profile-stat-val" id="stat-followers">—</div>
+            <div class="profile-stat-label">Seguidores</div>
+          </div>
+          <div>
+            <div class="profile-stat-val" id="stat-following">—</div>
+            <div class="profile-stat-label">Siguiendo</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex gap-1" id="profile-actions">
+        <!-- injected by JS: Follow/Edit buttons -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SHELF TABS -->
+<div style="background:var(--bg);border-bottom:1px solid var(--border);position:sticky;top:var(--nav-h);z-index:50;">
+  <div class="shelf-tabs" id="shelf-tabs">
+    <button class="shelf-tab active" data-status="finished">Leídos</button>
+    <button class="shelf-tab" data-status="reading">Leyendo</button>
+    <button class="shelf-tab" data-status="want_to_read">Quiero leer</button>
+    <button class="shelf-tab" data-status="abandoned">Abandonados</button>
+  </div>
+</div>
+
+<!-- SHELF CONTENT -->
+<div style="max-width:var(--max-w);margin:0 auto;padding:2rem 1.5rem 5rem;">
+
+  <div class="hidden" id="add-book-btn-wrap" style="margin-bottom:1.5rem;">
+    <button class="btn btn-outline-accent" id="add-book-btn">
+      <svg width="15" height="15" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
+      </svg>
+      Agregar libro
+    </button>
+  </div>
+
+  <div id="shelf-list" class="results-list"></div>
+
+  <div class="empty-state hidden" id="shelf-empty">
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+    </svg>
+    <div class="empty-state-title" id="shelf-empty-title">Sin libros aquí todavía</div>
+    <div class="empty-state-sub" id="shelf-empty-sub"></div>
+  </div>
+
+</div>
+
+<!-- ADD BOOK MODAL -->
+<div class="modal-overlay" id="add-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Agregar libro</div>
+      <button class="modal-close" id="add-modal-close">×</button>
+    </div>
+
+    <div class="field mb-2">
+      <label class="label">Buscar libro</label>
+      <div class="book-search-wrap">
+        <span class="book-search-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+        </span>
+        <input class="book-search-input" id="book-search-input" placeholder="Título o autor..." autocomplete="off">
+        <div class="book-search-dropdown" id="book-search-dropdown"></div>
+      </div>
+    </div>
+
+    <div id="selected-book-display" class="hidden" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:0.75rem 1rem;margin-bottom:1rem;display:flex;gap:0.75rem;align-items:center;">
+      <img id="selected-book-cover" src="" alt="" class="book-search-result-cover">
+      <div>
+        <div id="selected-book-title" style="font-weight:500;font-size:0.9rem;"></div>
+        <div id="selected-book-author" style="font-size:0.78rem;color:var(--muted);"></div>
+      </div>
+    </div>
+
+    <div class="field mb-2">
+      <label class="label">Estado</label>
+      <select class="select" id="entry-status" style="width:100%;">
+        <option value="want_to_read">Quiero leer</option>
+        <option value="reading">Leyendo</option>
+        <option value="finished">Leído</option>
+        <option value="abandoned">Abandonado</option>
+      </select>
+    </div>
+
+    <div id="rating-wrap" class="field mb-2">
+      <label class="label">Puntuación</label>
+      <div id="star-input-container"></div>
+    </div>
+
+    <div class="field mb-2">
+      <label class="label">Reseña</label>
+      <textarea class="textarea" id="entry-review" placeholder="¿Qué te pareció?" style="width:100%;"></textarea>
+    </div>
+
+    <div class="field mb-2">
+      <label class="label">Cita favorita</label>
+      <textarea class="textarea" id="entry-quote" placeholder="Un fragmento que te marcó..." style="width:100%;min-height:70px;"></textarea>
+    </div>
+
+    <div class="grid-2" style="margin-bottom:1.25rem;">
+      <div class="field">
+        <label class="label">Inicio de lectura</label>
+        <input class="input" type="date" id="entry-started">
+      </div>
+      <div class="field">
+        <label class="label">Fin de lectura</label>
+        <input class="input" type="date" id="entry-finished">
+      </div>
+    </div>
+
+    <div id="modal-error" class="input-error hidden mb-1"></div>
+
+    <button class="btn btn-primary btn-full" id="save-entry-btn">Guardar</button>
+  </div>
+</div>
+
+<div class="toast-container" id="toast-container"></div>
+
+<script type="module" src="/js/profile.js"></script>
+</body>
+</html>

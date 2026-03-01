@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Feed — Verso</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <script>
+    (function(){ const t=localStorage.getItem("verso-theme")||"light"; document.documentElement.setAttribute("data-theme",t); })();
+  </script>
+</head>
+<body>
+
+<nav class="nav" id="main-nav"></nav>
+
+<div class="feed-layout">
+
+  <!-- FEED -->
+  <main>
+    <div class="section-label mb-2">Actividad reciente</div>
+
+    <div id="feed-list" class="feed-list"></div>
+
+    <div class="empty-state hidden" id="feed-empty">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+      </svg>
+      <div class="empty-state-title">Tu feed está vacío</div>
+      <div class="empty-state-sub">
+        Seguí a otros lectores para ver su actividad aquí.<br>
+        <a href="/pages/discover.html" class="text-accent" style="margin-top:0.5rem;display:inline-block;">O descubrí libros con IA →</a>
+      </div>
+    </div>
+
+    <div class="loading-state hidden" id="feed-loading">
+      Cargando<span class="loading-dots"> · · ·</span>
+    </div>
+
+    <!-- Global feed (not logged in / not following anyone) -->
+    <div id="global-feed-list" class="feed-list hidden"></div>
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="feed-sidebar">
+
+    <!-- Who to follow -->
+    <div class="card mb-2">
+      <div class="feed-sidebar-title">Lectores para seguir</div>
+      <div id="suggestions-list">
+        <div class="skeleton" style="height:44px;margin-bottom:0.5rem;border-radius:var(--radius);"></div>
+        <div class="skeleton" style="height:44px;margin-bottom:0.5rem;border-radius:var(--radius);"></div>
+        <div class="skeleton" style="height:44px;border-radius:var(--radius);"></div>
+      </div>
+    </div>
+
+    <!-- Quick discover -->
+    <div class="card">
+      <div class="feed-sidebar-title" style="margin-bottom:0.75rem;">Descubrí tu próxima lectura</div>
+      <p class="text-sm text-muted" style="line-height:1.65;margin-bottom:1rem;">Usá nuestra IA para encontrar libros basados en lo que ya amás.</p>
+      <a href="/pages/discover.html" class="btn btn-outline-accent btn-sm btn-full">Ir a Discover →</a>
+    </div>
+
+  </aside>
+
+</div>
+
+<div class="toast-container" id="toast-container"></div>
+
+<script type="module" src="/js/feed.js"></script>
+</body>
+</html>

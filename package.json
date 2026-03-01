@@ -1,0 +1,14 @@
+{
+  "name": "verso",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Verso — discover, log, and share what you read",
+  "type": "module",
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "@neondatabase/serverless": "^0.9.3",
+    "bcryptjs": "^2.4.3",
+    "groq-sdk": "^0.7.0",
+    "jsonwebtoken": "^9.0.2"
+  }
+}

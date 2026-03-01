@@ -1,0 +1,22 @@
+{
+  "outputDirectory": "public",
+  "rewrites": [
+    { "source": "/api/entries/:id/like", "destination": "/api/entries/[id]?id=:id&action=like" },
+    { "source": "/api/entries/:id",      "destination": "/api/entries/[id]?id=:id" },
+    { "source": "/api/entries",          "destination": "/api/entries/index" },
+    { "source": "/api/books/:id/stats",  "destination": "/api/books/[id]?id=:id&action=stats" },
+    { "source": "/api/books/:id",        "destination": "/api/books/[id]?id=:id" },
+    { "source": "/api/users/:id/follow", "destination": "/api/users/follow?username=:id" },
+    { "source": "/api/users/:id",        "destination": "/api/users/[id]?id=:id" }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin",  "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET,POST,PUT,DELETE,OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type, Authorization" }
+      ]
+    }
+  ]
+}
