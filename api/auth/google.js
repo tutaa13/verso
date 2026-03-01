@@ -71,6 +71,7 @@ export default async function handler(req, res) {
     } catch (err) {
       console.error("Google OAuth error:", err.message);
       return res.redirect(302, `${appUrl}/pages/login.html?error=${encodeURIComponent(err.message)}`);
+    }
   }
 
   // ── INITIATE: redirect to Google ──────────────────────────
