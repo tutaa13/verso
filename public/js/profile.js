@@ -124,7 +124,7 @@ async function loadShelf(status) {
       list.appendChild(card);
     });
   } catch (err) {
-    toast("Error cargando el estante", "error");
+    toast("Error: " + (err.message || err), "error");
   }
 }
 
