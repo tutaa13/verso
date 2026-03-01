@@ -14,22 +14,57 @@ export default async function handler(req, res) {
 
     try {
       let rows;
+
       if (book) {
         // Entries for a specific book (community view)
-        rows = await sql`
-          SELECT e.*,
-            u.username, u.display_name, u.avatar_url,
-            b.title AS book_title, b.author AS book_author, b.cover_url AS book_cover,
-            (SELECT COUNT(*) FROM likes l WHERE l.entry_id = e.id) AS likes_count,
-            ${me ? sql`(SELECT 1 FROM likes l WHERE l.entry_id = e.id AND l.user_id = ${me.id}) IS NOT NULL` : sql`FALSE`} AS i_liked
-          FROM entries e
-          JOIN users u ON u.id = e.user_id
-          LEFT JOIN books b ON b.id = e.book_id
-          WHERE e.book_id = ${book}
-            ${status ? sql`AND e.status = ${status}` : sql``}
-            ${has_review === "1" ? sql`AND e.review IS NOT NULL AND e.review <> ''` : sql``}
-          ORDER BY e.updated_at DESC
-          LIMIT 50`;
+        const withReview = has_review === "1";
+        if (status && withReview) {
+          rows = await sql`
+            SELECT e.*, u.username, u.display_name, u.avatar_url,
+              b.title AS book_title, b.author AS book_author, b.cover_url AS book_cover,
+              (SELECT COUNT(*) FROM likes l WHERE l.entry_id = e.id) AS likes_count,
+              FALSE AS i_liked
+            FROM entries e
+            JOIN users u ON u.id = e.user_id
+            LEFT JOIN books b ON b.id = e.book_id
+            WHERE e.book_id = ${book} AND e.status = ${status}
+              AND e.review IS NOT NULL AND e.review <> ''
+            ORDER BY e.updated_at DESC LIMIT 50`;
+        } else if (status) {
+          rows = await sql`
+            SELECT e.*, u.username, u.display_name, u.avatar_url,
+              b.title AS book_title, b.author AS book_author, b.cover_url AS book_cover,
+              (SELECT COUNT(*) FROM likes l WHERE l.entry_id = e.id) AS likes_count,
+              FALSE AS i_liked
+            FROM entries e
+            JOIN users u ON u.id = e.user_id
+            LEFT JOIN books b ON b.id = e.book_id
+            WHERE e.book_id = ${book} AND e.status = ${status}
+            ORDER BY e.updated_at DESC LIMIT 50`;
+        } else if (withReview) {
+          rows = await sql`
+            SELECT e.*, u.username, u.display_name, u.avatar_url,
+              b.title AS book_title, b.author AS book_author, b.cover_url AS book_cover,
+              (SELECT COUNT(*) FROM likes l WHERE l.entry_id = e.id) AS likes_count,
+              FALSE AS i_liked
+            FROM entries e
+            JOIN users u ON u.id = e.user_id
+            LEFT JOIN books b ON b.id = e.book_id
+            WHERE e.book_id = ${book}
+              AND e.review IS NOT NULL AND e.review <> ''
+            ORDER BY e.updated_at DESC LIMIT 50`;
+        } else {
+          rows = await sql`
+            SELECT e.*, u.username, u.display_name, u.avatar_url,
+              b.title AS book_title, b.author AS book_author, b.cover_url AS book_cover,
+              (SELECT COUNT(*) FROM likes l WHERE l.entry_id = e.id) AS likes_count,
+              FALSE AS i_liked
+            FROM entries e
+            JOIN users u ON u.id = e.user_id
+            LEFT JOIN books b ON b.id = e.book_id
+            WHERE e.book_id = ${book}
+            ORDER BY e.updated_at DESC LIMIT 50`;
+        }
         return res.status(200).json(rows.map(formatEntry));
       }
 
@@ -38,15 +73,23 @@ export default async function handler(req, res) {
         const [profileUser] = await sql`SELECT id FROM users WHERE username = ${user} LIMIT 1`;
         if (!profileUser) return res.status(404).json({ error: "User not found" });
 
-        rows = await sql`
-          SELECT e.*,
-            b.title AS book_title, b.author AS book_author, b.cover_url AS book_cover
-          FROM entries e
-          LEFT JOIN books b ON b.id = e.book_id
-          WHERE e.user_id = ${profileUser.id}
-            ${status ? sql`AND e.status = ${status}` : sql``}
-          ORDER BY e.updated_at DESC
-          LIMIT 100`;
+        if (status) {
+          rows = await sql`
+            SELECT e.*,
+              b.title AS book_title, b.author AS book_author, b.cover_url AS book_cover
+            FROM entries e
+            LEFT JOIN books b ON b.id = e.book_id
+            WHERE e.user_id = ${profileUser.id} AND e.status = ${status}
+            ORDER BY e.updated_at DESC LIMIT 100`;
+        } else {
+          rows = await sql`
+            SELECT e.*,
+              b.title AS book_title, b.author AS book_author, b.cover_url AS book_cover
+            FROM entries e
+            LEFT JOIN books b ON b.id = e.book_id
+            WHERE e.user_id = ${profileUser.id}
+            ORDER BY e.updated_at DESC LIMIT 100`;
+        }
         return res.status(200).json(rows.map(formatEntry));
       }
 
@@ -66,7 +109,6 @@ export default async function handler(req, res) {
     if (!book_id || !status) return res.status(400).json({ error: "book_id y status son requeridos" });
 
     try {
-      // Upsert book into our cache
       if (book && book.title) {
         await sql`
           INSERT INTO books (id, title, author, cover_url)
