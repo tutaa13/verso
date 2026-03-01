@@ -17,7 +17,7 @@ export default async function handler(req, res) {
     try {
       const [entry] = await sql`
         UPDATE entries SET
-          status      = COALESCE(${status || null}, status),
+          status      = COALESCE(${status ?? null}, status),
           rating      = ${rating || null},
           review      = ${review || null},
           quote       = ${quote  || null},

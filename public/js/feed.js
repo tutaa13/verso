@@ -92,7 +92,7 @@ function renderEntries(entries, container) {
           <svg viewBox="0 0 20 20" fill="${e.i_liked ? "currentColor" : "none"}" stroke="currentColor" stroke-width="1.5" style="width:15px;height:15px;">
             <path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"/>
           </svg>
-          ${e.likes_count || 0}
+          <span class="like-count">${e.likes_count || 0}</span>
         </button>
         <a href="/pages/book.html?id=${escHtml(e.book_id)}" class="action-btn">Ver libro</a>
       </div>`;
@@ -114,15 +114,20 @@ function activityLabel(e) {
 
 async function toggleLike(btn, entryId) {
   if (!isLoggedIn()) { window.location.href = "/pages/login.html"; return; }
+  if (btn.disabled) return;
+  btn.disabled = true;
   const liked = btn.dataset.liked === "true";
   try {
     await api(`/api/entries/${entryId}/like`, { method: liked ? "DELETE" : "POST" });
     btn.dataset.liked = String(!liked);
     btn.classList.toggle("liked", !liked);
-    const svg = btn.querySelector("svg");
-    svg.setAttribute("fill", !liked ? "currentColor" : "none");
-    btn.innerHTML = btn.innerHTML.replace(/\d+/, n => Number(n) + (!liked ? 1 : -1));
-  } catch {}
+    btn.querySelector("svg").setAttribute("fill", !liked ? "currentColor" : "none");
+    const span = btn.querySelector(".like-count");
+    span.textContent = Number(span.textContent) + (!liked ? 1 : -1);
+  } catch {
+  } finally {
+    btn.disabled = false;
+  }
 }
 
 // ── Suggestions (who to follow) ───────────────────────────────
