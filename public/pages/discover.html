@@ -73,10 +73,16 @@
       <div id="selection-summary" class="text-muted text-sm italic mt-1" style="text-align:center;"></div>
     </div>
 
-    <!-- Rate limit note -->
+    <!-- Historial / rate limit note -->
     <div style="margin-top:1rem;padding:0.75rem;background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);">
       <div style="font-size:0.75rem;color:var(--muted);line-height:1.6;font-family:var(--font-mono);">
         Powered by Groq AI.
+      </div>
+      <div style="margin-top:0.5rem;display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
+        <span id="seen-counter" style="font-size:0.7rem;color:var(--muted);font-family:var(--font-mono);display:none;"></span>
+        <button id="clear-seen-btn" class="btn btn-ghost btn-sm" style="font-size:0.7rem;padding:0.15rem 0.5rem;display:none;">
+          Limpiar historial
+        </button>
       </div>
     </div>
 

@@ -20,6 +20,43 @@ let qty = 5;
 let loading = false;
 let booksInput, moviesInput;
 
+// ── Historial de libros ya vistos (localStorage) ──────────────
+const SEEN_KEY = "verso_seen_books";
+const SEEN_MAX = 60; // máximo de títulos a recordar
+
+function getSeenBooks() {
+  try { return JSON.parse(localStorage.getItem(SEEN_KEY) || "[]"); } catch { return []; }
+}
+
+function addSeenBooks(libros) {
+  const seen = getSeenBooks();
+  libros.forEach(b => {
+    const entry = `${b.titulo} de ${b.autor}`;
+    if (!seen.includes(entry)) seen.push(entry);
+  });
+  localStorage.setItem(SEEN_KEY, JSON.stringify(seen.slice(-SEEN_MAX)));
+  updateSeenCounter();
+}
+
+function clearSeenBooks() {
+  localStorage.removeItem(SEEN_KEY);
+  updateSeenCounter();
+}
+
+function updateSeenCounter() {
+  const count = getSeenBooks().length;
+  const el = qs("#seen-counter");
+  if (!el) return;
+  if (count > 0) {
+    el.textContent = `${count} libro${count !== 1 ? "s" : ""} en historial`;
+    el.style.display = "inline";
+    qs("#clear-seen-btn").style.display = "inline";
+  } else {
+    el.style.display = "none";
+    qs("#clear-seen-btn").style.display = "none";
+  }
+}
+
 // ── Init tag inputs ──────────────────────────────────────────
 function initInputs() {
   const booksWrap = qs("#books-input-wrap");
@@ -168,13 +205,15 @@ async function doSearch() {
   setState("loading-state");
 
   try {
+    const excludedBooks = getSeenBooks();
     const res = await fetch("/api/recommend", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ books, movies, freeText, chips, qty }),
+      body: JSON.stringify({ books, movies, freeText, chips, qty, excludedBooks }),
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || `Error ${res.status}`);
+    if (data.libros?.length) addSeenBooks(data.libros);
     renderResults(data);
     setState("results-container");
   } catch (err) {
@@ -191,6 +230,11 @@ initInputs();
 buildFilters();
 initQty();
 setState("empty-state");
+updateSeenCounter();
 
 qs("#search-btn").addEventListener("click", doSearch);
 qs("#retry-btn").addEventListener("click", doSearch);
+qs("#clear-seen-btn")?.addEventListener("click", () => {
+  clearSeenBooks();
+  toast("Historial borrado — la IA ya no excluye libros anteriores.");
+});

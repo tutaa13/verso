@@ -10,7 +10,7 @@ export default async function handler(req, res) {
   if (req.method === "OPTIONS") return res.status(200).end();
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
 
-  const { books = [], movies = [], freeText = "", chips = [], qty = 5 } = req.body;
+  const { books = [], movies = [], freeText = "", chips = [], qty = 5, excludedBooks = [] } = req.body;
   if (!books.length && !movies.length && !freeText.trim()) {
     return res.status(400).json({ error: "Ingresá al menos un libro, película o texto libre." });
   }
@@ -30,13 +30,14 @@ export default async function handler(req, res) {
     }
   } catch {}
 
-  const prompt = buildPrompt(books, movies, freeText, chips, Math.min(Number(qty) || 5, 10));
+  const prompt = buildPrompt(books, movies, freeText, chips, Math.min(Number(qty) || 5, 10), excludedBooks);
 
   try {
     const completion = await groq.chat.completions.create({
       model: "llama-3.3-70b-versatile",
       max_tokens: 4096,
-      temperature: 0.7,
+      temperature: 0.9,
+      top_p: 0.95,
       messages: [{ role: "user", content: prompt }],
     });
 
@@ -49,7 +50,20 @@ export default async function handler(req, res) {
   }
 }
 
-function buildPrompt(books, movies, freeText, chips, qty) {
+const EXPLORATION_ANGLES = [
+  "explorando literaturas latinoamericanas, africanas o asiáticas poco representadas",
+  "priorizando autoras mujeres o voces históricamente marginadas",
+  "buscando óperas primas o segundas novelas de autores emergentes",
+  "enfocándote en obras publicadas en los últimos 15 años",
+  "rastreando joyas de culto con poca visibilidad mainstream",
+  "cruzando géneros de forma inesperada (ej: thriller filosófico, romance histórico experimental)",
+  "priorizando autores de Europa del Este, Escandinavia o el Mediterráneo",
+  "buscando en la periferia del canon: autores traducidos pero poco conocidos en habla hispana",
+  "con énfasis en estructuras narrativas no convencionales",
+  "explorando la tradición de un país o región literaria específica poco común",
+];
+
+function buildPrompt(books, movies, freeText, chips, qty, excludedBooks = []) {
   let context = "";
   if (books.length > 0 && movies.length > 0) {
     context = `El lector disfrutó los libros: ${books.join(", ")}. También le gustaron las películas/series: ${movies.join(", ")}. Buscá libros que capturen la esencia de ambas fuentes.`;
@@ -59,8 +73,16 @@ function buildPrompt(books, movies, freeText, chips, qty) {
     context = `Al lector le gustaron las películas/series: ${movies.join(", ")}. Recomendá libros que capturen el mismo tono, atmósfera y temáticas.`;
   }
   if (freeText) context += ` Además: ${freeText}.`;
+
   const filterPart = chips.length > 0 ? ` Preferencias específicas: ${chips.join(", ")}.` : "";
-  return `Sos un crítico literario y cinéfilo experto. ${context}${filterPart} Recomendá exactamente ${qty} libros. Respondé SOLO con JSON válido sin backticks ni markdown. Cada por_que: máximo 2 oraciones. Formato exacto: {"analisis":"una oración sobre el perfil del lector","libros":[{"titulo":"...","autor":"...","anio":"...","por_que":"...","conexion":"...","tags":["t1","t2","t3"]}]}`;
+
+  const exclusionPart = excludedBooks.length > 0
+    ? ` IMPORTANTE: NO recomiendes ninguno de estos títulos que ya fueron mostrados: ${excludedBooks.slice(0, 40).join("; ")}. Buscá obras completamente distintas.`
+    : "";
+
+  const angle = EXPLORATION_ANGLES[Math.floor(Math.random() * EXPLORATION_ANGLES.length)];
+
+  return `Sos un crítico literario y cinéfilo con conocimiento enciclopédico y gusto por lo poco convencional. ${context}${filterPart}${exclusionPart} Priorizá obras menos conocidas, joyas subestimadas y autores fuera del canon típico — evitá los títulos que aparecen en toda lista de recomendaciones estándar. En esta búsqueda, explorá ${angle}. Recomendá exactamente ${qty} libros. Respondé SOLO con JSON válido sin backticks ni markdown. Cada por_que: máximo 2 oraciones. Formato exacto: {"analisis":"una oración sobre el perfil del lector","libros":[{"titulo":"...","autor":"...","anio":"...","por_que":"...","conexion":"...","tags":["t1","t2","t3"]}]}`;
 }
 
 function parseRobust(raw) {
