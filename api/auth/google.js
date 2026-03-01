@@ -11,7 +11,7 @@ export default async function handler(req, res) {
 
   // ── CALLBACK: Google redirected back with ?code= ──────────
   if (code || error) {
-    if (error) return res.redirect(302, `/pages/login.html?error=oauth_failed`);
+    if (error) return res.redirect(302, `${appUrl}/pages/login.html?error=oauth_failed`);
 
     try {
       // Exchange code for tokens
@@ -66,12 +66,11 @@ export default async function handler(req, res) {
 
       const token      = signToken({ id: user.id, username: user.username });
       const userEncoded = encodeURIComponent(JSON.stringify(user));
-      return res.redirect(302, `/pages/login.html?token=${token}&user=${userEncoded}`);
+      return res.redirect(302, `${appUrl}/pages/login.html?token=${token}&user=${userEncoded}`);
 
     } catch (err) {
       console.error("Google OAuth error:", err.message);
-      return res.redirect(302, `/pages/login.html?error=oauth_failed`);
-    }
+      return res.redirect(302, `${appUrl}/pages/login.html?error=${encodeURIComponent(err.message)}`);
   }
 
   // ── INITIATE: redirect to Google ──────────────────────────

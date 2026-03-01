@@ -116,10 +116,18 @@ document.getElementById("google-btn").addEventListener("click", () => {
 // Handle OAuth callback token (Google redirects to /pages/login.html?token=...)
 const token = params.get("token");
 const userParam = params.get("user");
+const oauthError = params.get("error");
+
+if (oauthError) {
+  toast("Error al iniciar sesión con Google: " + decodeURIComponent(oauthError), "error");
+}
+
 if (token && userParam) {
   try {
     saveAuth(token, JSON.parse(decodeURIComponent(userParam)));
     toast("¡Bienvenido!", "success");
     setTimeout(() => { window.location.href = "/pages/feed.html"; }, 500);
-  } catch {}
+  } catch (e) {
+    toast("Error al procesar el login: " + e.message, "error");
+  }
 }
