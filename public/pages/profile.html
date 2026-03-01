@@ -132,6 +132,13 @@
         <div id="star-input-container"></div>
       </div>
 
+      <div class="field mb-2">
+        <label class="label">Reseña</label>
+        <textarea class="textarea" id="entry-review" placeholder="¿Qué te pareció?" style="width:100%;min-height:unset;height:70px;"></textarea>
+      </div>
+
+      <textarea id="entry-quote" style="display:none;"></textarea>
+
       <div class="grid-2">
         <div class="field">
           <label class="label">Inicio de lectura</label>
@@ -142,18 +149,6 @@
           <input class="input" type="date" id="entry-finished">
         </div>
       </div>
-
-      <details class="mt-2">
-        <summary style="cursor:pointer;font-size:0.82rem;color:var(--muted);margin-bottom:0.75rem;">+ Reseña y cita (opcional)</summary>
-        <div class="field mb-2">
-          <label class="label">Reseña</label>
-          <textarea class="textarea" id="entry-review" placeholder="¿Qué te pareció?" style="width:100%;min-height:unset;height:70px;"></textarea>
-        </div>
-        <div class="field">
-          <label class="label">Cita favorita</label>
-          <textarea class="textarea" id="entry-quote" placeholder="Un fragmento que te marcó..." style="width:100%;min-height:unset;height:55px;"></textarea>
-        </div>
-      </details>
     </div>
 
     <div class="modal-footer">
