@@ -629,10 +629,10 @@ h3 { font-size: 1.15rem; font-weight: 600; }
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 2rem;
+  padding: 1.25rem 1.5rem;
   width: 100%;
   max-width: 520px;
-  max-height: 90vh;
+  max-height: 92vh;
   overflow-y: auto;
   box-shadow: var(--shadow-lg);
   transform: translateY(12px);
