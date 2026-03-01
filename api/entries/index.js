@@ -28,7 +28,6 @@ export default async function handler(req, res) {
           WHERE e.book_id = ${book}
             ${status ? sql`AND e.status = ${status}` : sql``}
             ${has_review === "1" ? sql`AND e.review IS NOT NULL AND e.review <> ''` : sql``}
-            AND (e.is_private = FALSE ${me ? sql`OR e.user_id = ${me.id}` : sql``})
           ORDER BY e.updated_at DESC
           LIMIT 50`;
         return res.status(200).json(rows.map(formatEntry));
@@ -46,7 +45,6 @@ export default async function handler(req, res) {
           LEFT JOIN books b ON b.id = e.book_id
           WHERE e.user_id = ${profileUser.id}
             ${status ? sql`AND e.status = ${status}` : sql``}
-            AND (e.is_private = FALSE ${me && me.id === profileUser.id ? sql`OR TRUE` : sql``})
           ORDER BY e.updated_at DESC
           LIMIT 100`;
         return res.status(200).json(rows.map(formatEntry));
