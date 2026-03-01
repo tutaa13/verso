@@ -95,66 +95,69 @@
       <button class="modal-close" id="add-modal-close">×</button>
     </div>
 
-    <div class="field mb-2">
-      <label class="label">Buscar libro</label>
-      <div class="book-search-wrap">
-        <span class="book-search-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-          </svg>
-        </span>
-        <input class="book-search-input" id="book-search-input" placeholder="Título o autor..." autocomplete="off">
-        <div class="book-search-dropdown" id="book-search-dropdown"></div>
+    <div class="modal-body">
+      <div class="field mb-2">
+        <label class="label">Buscar libro</label>
+        <div class="book-search-wrap">
+          <span class="book-search-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            </svg>
+          </span>
+          <input class="book-search-input" id="book-search-input" placeholder="Título o autor..." autocomplete="off">
+          <div class="book-search-dropdown" id="book-search-dropdown"></div>
+        </div>
+      </div>
+
+      <div id="selected-book-display" class="hidden" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:0.75rem 1rem;margin-bottom:1rem;display:flex;gap:0.75rem;align-items:center;">
+        <img id="selected-book-cover" src="" alt="" class="book-search-result-cover">
+        <div>
+          <div id="selected-book-title" style="font-weight:500;font-size:0.9rem;"></div>
+          <div id="selected-book-author" style="font-size:0.78rem;color:var(--muted);"></div>
+        </div>
+      </div>
+
+      <div class="field mb-2">
+        <label class="label">Estado</label>
+        <select class="select" id="entry-status" style="width:100%;">
+          <option value="want_to_read">Quiero leer</option>
+          <option value="reading">Leyendo</option>
+          <option value="finished">Leído</option>
+          <option value="abandoned">Abandonado</option>
+        </select>
+      </div>
+
+      <div id="rating-wrap" class="field mb-2">
+        <label class="label">Puntuación</label>
+        <div id="star-input-container"></div>
+      </div>
+
+      <div class="field mb-2">
+        <label class="label">Reseña</label>
+        <textarea class="textarea" id="entry-review" placeholder="¿Qué te pareció?" rows="3" style="width:100%;min-height:unset;"></textarea>
+      </div>
+
+      <div class="field mb-2">
+        <label class="label">Cita favorita</label>
+        <textarea class="textarea" id="entry-quote" placeholder="Un fragmento que te marcó..." rows="2" style="width:100%;min-height:unset;"></textarea>
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label class="label">Inicio de lectura</label>
+          <input class="input" type="date" id="entry-started">
+        </div>
+        <div class="field">
+          <label class="label">Fin de lectura</label>
+          <input class="input" type="date" id="entry-finished">
+        </div>
       </div>
     </div>
 
-    <div id="selected-book-display" class="hidden" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:0.75rem 1rem;margin-bottom:1rem;display:flex;gap:0.75rem;align-items:center;">
-      <img id="selected-book-cover" src="" alt="" class="book-search-result-cover">
-      <div>
-        <div id="selected-book-title" style="font-weight:500;font-size:0.9rem;"></div>
-        <div id="selected-book-author" style="font-size:0.78rem;color:var(--muted);"></div>
-      </div>
+    <div class="modal-footer">
+      <div id="modal-error" class="input-error hidden mb-1"></div>
+      <button class="btn btn-primary btn-full" id="save-entry-btn">Guardar</button>
     </div>
-
-    <div class="field mb-2">
-      <label class="label">Estado</label>
-      <select class="select" id="entry-status" style="width:100%;">
-        <option value="want_to_read">Quiero leer</option>
-        <option value="reading">Leyendo</option>
-        <option value="finished">Leído</option>
-        <option value="abandoned">Abandonado</option>
-      </select>
-    </div>
-
-    <div id="rating-wrap" class="field mb-2">
-      <label class="label">Puntuación</label>
-      <div id="star-input-container"></div>
-    </div>
-
-    <div class="field mb-2">
-      <label class="label">Reseña</label>
-      <textarea class="textarea" id="entry-review" placeholder="¿Qué te pareció?" rows="3" style="width:100%;min-height:unset;"></textarea>
-    </div>
-
-    <div class="field mb-2">
-      <label class="label">Cita favorita</label>
-      <textarea class="textarea" id="entry-quote" placeholder="Un fragmento que te marcó..." rows="2" style="width:100%;min-height:unset;"></textarea>
-    </div>
-
-    <div class="grid-2" style="margin-bottom:1.25rem;">
-      <div class="field">
-        <label class="label">Inicio de lectura</label>
-        <input class="input" type="date" id="entry-started">
-      </div>
-      <div class="field">
-        <label class="label">Fin de lectura</label>
-        <input class="input" type="date" id="entry-finished">
-      </div>
-    </div>
-
-    <div id="modal-error" class="input-error hidden mb-1"></div>
-
-    <button class="btn btn-primary btn-full" id="save-entry-btn">Guardar</button>
   </div>
 </div>
 
