@@ -6,8 +6,69 @@ export default async function handler(req, res) {
   if (req.method === "OPTIONS") return res.status(200).end();
 
   const sql      = getDb();
-  const username = req.query.id; // route: /api/users/[id] where id = username
+  const username = req.query.id;
+  const action   = req.query.action;
   const me       = verifyToken(req);
+
+  // ── GET /api/users/suggestions ────────────────────────────
+  if (req.method === "GET" && username === "suggestions") {
+    try {
+      let users;
+      if (me) {
+        users = await sql`
+          SELECT u.id, u.username, u.display_name, u.avatar_url,
+            COUNT(e.id) FILTER (WHERE e.status = 'finished') AS finished_count
+          FROM users u
+          LEFT JOIN entries e ON e.user_id = u.id
+          WHERE u.id <> ${me.id}
+            AND u.id NOT IN (SELECT following_id FROM follows WHERE follower_id = ${me.id})
+          GROUP BY u.id
+          ORDER BY finished_count DESC, u.created_at DESC
+          LIMIT 8`;
+      } else {
+        users = await sql`
+          SELECT u.id, u.username, u.display_name, u.avatar_url,
+            COUNT(e.id) FILTER (WHERE e.status = 'finished') AS finished_count
+          FROM users u
+          LEFT JOIN entries e ON e.user_id = u.id
+          GROUP BY u.id
+          ORDER BY finished_count DESC
+          LIMIT 8`;
+      }
+      return res.status(200).json(users.map(u => ({ ...u, finished_count: Number(u.finished_count || 0) })));
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  }
+
+  // ── POST/DELETE /api/users/:id/follow ─────────────────────
+  if (action === "follow") {
+    const auth = requireAuth(req, res);
+    if (!auth) return;
+
+    try {
+      const [target] = await sql`SELECT id FROM users WHERE username = ${username} LIMIT 1`;
+      if (!target) return res.status(404).json({ error: "User not found" });
+      if (target.id === auth.id) return res.status(400).json({ error: "Cannot follow yourself" });
+
+      if (req.method === "POST") {
+        await sql`
+          INSERT INTO follows (follower_id, following_id)
+          VALUES (${auth.id}, ${target.id})
+          ON CONFLICT DO NOTHING`;
+        return res.status(200).json({ following: true });
+      }
+
+      if (req.method === "DELETE") {
+        await sql`DELETE FROM follows WHERE follower_id = ${auth.id} AND following_id = ${target.id}`;
+        return res.status(200).json({ following: false });
+      }
+
+      return res.status(405).json({ error: "Method not allowed" });
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  }
 
   // ── GET: user profile ─────────────────────────────────────
   if (req.method === "GET") {
@@ -19,8 +80,8 @@ export default async function handler(req, res) {
 
       const [[stats], [followStats]] = await Promise.all([
         sql`SELECT
-          COUNT(*) FILTER (WHERE status = 'finished')   AS finished,
-          COUNT(*) FILTER (WHERE status = 'reading')    AS reading,
+          COUNT(*) FILTER (WHERE status = 'finished')     AS finished,
+          COUNT(*) FILTER (WHERE status = 'reading')      AS reading,
           COUNT(*) FILTER (WHERE status = 'want_to_read') AS want_to_read
         FROM entries WHERE user_id = ${user.id}`,
         sql`SELECT
@@ -59,7 +120,7 @@ export default async function handler(req, res) {
       const [user] = await sql`
         UPDATE users SET
           display_name = COALESCE(${display_name || null}, display_name),
-          bio          = ${bio          ?? null},
+          bio          = ${bio         ?? null},
           avatar_url   = ${avatar_url  ?? null},
           locale       = COALESCE(${locale || null}, locale)
         WHERE username = ${username}

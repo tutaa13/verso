@@ -6,7 +6,7 @@
     { "source": "/api/entries",          "destination": "/api/entries/index" },
     { "source": "/api/books/:id/stats",  "destination": "/api/books/[id]?id=:id&action=stats" },
     { "source": "/api/books/:id",        "destination": "/api/books/[id]?id=:id" },
-    { "source": "/api/users/:id/follow", "destination": "/api/users/follow?username=:id" },
+    { "source": "/api/users/:id/follow", "destination": "/api/users/[id]?id=:id&action=follow" },
     { "source": "/api/users/:id",        "destination": "/api/users/[id]?id=:id" }
   ],
   "headers": [
