@@ -15,119 +15,203 @@
 <nav class="nav" id="main-nav"></nav>
 
 <!-- HERO -->
-<section class="hero">
-  <div class="eyebrow" style="margin-bottom:1.25rem;">Literary intelligence</div>
-  <h1 class="display display-lg">
-    Tu próxima<br><em>gran lectura</em>
-  </h1>
-  <p class="hero-sub">
-    Decile a Verso qué libros y películas amaste.<br>
-    La IA encontrará tu próxima lectura favorita.
+<section class="hero-editorial">
+  <!-- Corner crosshairs -->
+  <div class="hero-editorial-corners" aria-hidden="true">
+    <div class="hero-editorial-corner tl"></div>
+    <div class="hero-editorial-corner tr"></div>
+    <div class="hero-editorial-corner bl"></div>
+    <div class="hero-editorial-corner br"></div>
+  </div>
+
+  <div class="ed-label reveal" style="--reveal-delay:0.1s; margin-bottom:2rem;">Literary Intelligence · Descubrí · Registrá · Compartí</div>
+
+  <h1 class="ed-xl reveal" style="--reveal-delay:0.25s;">Verso</h1>
+
+  <p class="hero-editorial-sub reveal" style="--reveal-delay:0.45s;">
+    Tu próxima <em>gran lectura</em>, encontrada por IA
   </p>
-  <div class="hero-cta">
+
+  <div class="reveal" style="--reveal-delay:0.6s; display:flex; gap:1rem; align-items:center; flex-wrap:wrap; justify-content:center;">
     <a href="/pages/discover.html" class="btn btn-primary btn-lg">Descubrir libros</a>
-    <a href="/pages/login.html?tab=register" class="btn btn-secondary btn-lg">Crear cuenta</a>
+    <a href="/pages/login.html?tab=register" class="btn-circle" aria-label="Crear cuenta">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+    </a>
   </div>
 
-  <!-- Sample cards (decorative) -->
-  <div class="hero-sample">
-    <div class="card fade-up fade-up-1" style="text-align:left;">
-      <div class="eyebrow mb-1">Recomendado</div>
-      <div style="font-family:var(--font-display);font-size:1.05rem;font-weight:600;margin-bottom:0.2rem;">El nombre del viento</div>
-      <div style="font-size:0.78rem;color:var(--muted);">Patrick Rothfuss · 2007</div>
-    </div>
-    <div class="card fade-up fade-up-2" style="text-align:left;">
-      <div class="eyebrow mb-1">Recomendado</div>
-      <div style="font-family:var(--font-display);font-size:1.05rem;font-weight:600;margin-bottom:0.2rem;">La sombra del viento</div>
-      <div style="font-size:0.78rem;color:var(--muted);">Carlos Ruiz Zafón · 2001</div>
-    </div>
-    <div class="card fade-up fade-up-3" style="text-align:left;">
-      <div class="eyebrow mb-1">Recomendado</div>
-      <div style="font-family:var(--font-display);font-size:1.05rem;font-weight:600;margin-bottom:0.2rem;">La elegancia del erizo</div>
-      <div style="font-size:0.78rem;color:var(--muted);">Muriel Barbery · 2006</div>
-    </div>
-  </div>
+  <!-- Scroll hint -->
+  <div class="hero-scroll-hint" aria-hidden="true">Scroll</div>
 </section>
 
-<!-- FEATURES -->
-<section class="features">
-  <div style="text-align:center;margin-bottom:3rem;">
-    <div class="eyebrow" style="margin-bottom:0.75rem;">Qué podés hacer</div>
-    <h2>Todo lo que un lector necesita</h2>
+<!-- MARQUEE -->
+<div class="marquee-wrap" aria-hidden="true">
+  <div class="marquee-track">
+    <span class="marquee-item">Descubrí con IA</span>
+    <span class="marquee-item">Registrá lecturas</span>
+    <span class="marquee-item">Escribí reseñas</span>
+    <span class="marquee-item">Seguí lectores</span>
+    <span class="marquee-item">Feed social</span>
+    <span class="marquee-item">Open Library</span>
+    <span class="marquee-item">Descubrí con IA</span>
+    <span class="marquee-item">Registrá lecturas</span>
+    <span class="marquee-item">Escribí reseñas</span>
+    <span class="marquee-item">Seguí lectores</span>
+    <span class="marquee-item">Feed social</span>
+    <span class="marquee-item">Open Library</span>
   </div>
-  <div class="features-grid">
-    <div class="fade-up fade-up-1">
-      <div class="feature-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-        </svg>
-      </div>
-      <div class="feature-title">Descubrí con IA</div>
-      <div class="feature-desc">Ingresá libros y películas que amaste. Verso analiza tu perfil literario y recomienda libros que realmente van a resonar con vos.</div>
+</div>
+
+<!-- FEATURES — service list -->
+<div class="section-editorial">
+  <div class="section-header">
+    <div>
+      <div class="ed-label reveal">Qué podés hacer</div>
     </div>
-    <div class="fade-up fade-up-2">
-      <div class="feature-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-        </svg>
+    <div class="section-header-right reveal" style="--reveal-delay:0.1s;">01 / 03</div>
+  </div>
+
+  <div class="service-list">
+    <div class="service-item open">
+      <div class="service-item-header">
+        <div class="service-item-title">Descubrí con IA</div>
+        <span class="service-item-num">01</span>
       </div>
-      <div class="feature-title">Registrá tus lecturas</div>
-      <div class="feature-desc">Llevá un registro de lo que leés, lo que querés leer y lo que abandonaste. Escribí reseñas, puntuaciones y guardá tus citas favoritas.</div>
+      <div class="service-item-body">
+        <div class="service-item-body-inner">
+          <p class="service-item-desc">Ingresá libros y películas que amaste. Verso analiza tu perfil literario — estilo narrativo, temáticas, atmósfera — y recomienda libros que realmente van a resonar con vos.</p>
+          <a href="/pages/discover.html" class="btn-circle" aria-label="Ir a Discover">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+          </a>
+        </div>
+      </div>
     </div>
-    <div class="fade-up fade-up-3">
-      <div class="feature-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-        </svg>
+
+    <div class="service-item">
+      <div class="service-item-header">
+        <div class="service-item-title">Registrá lecturas</div>
+        <span class="service-item-num">02</span>
       </div>
-      <div class="feature-title">Conectá con lectores</div>
-      <div class="feature-desc">Seguí a otros lectores, mirá qué están leyendo, compartí reseñas y descubrí libros a través de tu comunidad.</div>
+      <div class="service-item-body">
+        <div class="service-item-body-inner">
+          <p class="service-item-desc">Llevá un registro de lo que leés, lo que querés leer y lo que abandonaste. Escribí reseñas, puntuaciones y guardá tus citas favoritas.</p>
+          <a href="/pages/login.html?tab=register" class="btn-circle" aria-label="Crear cuenta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="service-item">
+      <div class="service-item-header">
+        <div class="service-item-title">Conectá con lectores</div>
+        <span class="service-item-num">03</span>
+      </div>
+      <div class="service-item-body">
+        <div class="service-item-body-inner">
+          <p class="service-item-desc">Seguí a otros lectores, mirá qué están leyendo y descubrí libros a través de tu comunidad en el feed social.</p>
+          <a href="/pages/feed.html" class="btn-circle" aria-label="Ver feed">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+          </a>
+        </div>
+      </div>
     </div>
   </div>
-</section>
+</div>
 
 <!-- HOW IT WORKS -->
-<section style="padding:5rem 1.5rem;max-width:680px;margin:0 auto;text-align:center;">
-  <div class="eyebrow" style="margin-bottom:0.75rem;">Cómo funciona</div>
-  <h2 style="margin-bottom:3rem;">Tres pasos para tu próxima lectura</h2>
-  <div style="display:flex;flex-direction:column;gap:2rem;text-align:left;">
-    <div style="display:flex;gap:1.5rem;align-items:flex-start;">
-      <div style="font-family:var(--font-display);font-size:2rem;font-weight:600;color:var(--accent);min-width:2.5rem;line-height:1;">01</div>
-      <div>
-        <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:600;margin-bottom:0.3rem;">Contale qué te gustó</div>
-        <div style="font-size:0.9rem;color:var(--text-dim);line-height:1.7;">Ingresá libros y/o películas que hayas amado. Podés agregar tantos como quieras y refinar con filtros.</div>
-      </div>
+<div style="background:var(--surface); border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+  <div class="section-editorial">
+    <div class="section-header">
+      <div class="ed-label reveal">Cómo funciona</div>
+      <div class="section-header-right reveal" style="--reveal-delay:0.1s;">02 / 03</div>
     </div>
-    <div style="display:flex;gap:1.5rem;align-items:flex-start;">
-      <div style="font-family:var(--font-display);font-size:2rem;font-weight:600;color:var(--accent);min-width:2.5rem;line-height:1;">02</div>
-      <div>
-        <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:600;margin-bottom:0.3rem;">La IA analiza tu perfil</div>
-        <div style="font-size:0.9rem;color:var(--text-dim);line-height:1.7;">Verso identifica los patrones en tus gustos — estilo narrativo, temáticas, época, atmósfera — y genera recomendaciones personalizadas.</div>
+
+    <div class="steps-grid">
+      <div class="reveal-fade" style="--reveal-delay:0s;">
+        <div class="step-num">01</div>
+        <div class="step-title">Contale qué te gustó</div>
+        <div class="step-desc">Ingresá libros y/o películas que hayas amado. Podés agregar tantos como quieras y refinar con filtros de estilo, época y género.</div>
       </div>
-    </div>
-    <div style="display:flex;gap:1.5rem;align-items:flex-start;">
-      <div style="font-family:var(--font-display);font-size:2rem;font-weight:600;color:var(--accent);min-width:2.5rem;line-height:1;">03</div>
-      <div>
-        <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:600;margin-bottom:0.3rem;">Leé, registrá y compartí</div>
-        <div style="font-size:0.9rem;color:var(--text-dim);line-height:1.7;">Agregá los libros a tu estante, escribí reseñas y compartí tus lecturas con la comunidad.</div>
+      <div class="reveal-fade" style="--reveal-delay:0.15s;">
+        <div class="step-num">02</div>
+        <div class="step-title">La IA analiza tu perfil</div>
+        <div class="step-desc">Verso identifica los patrones en tus gustos y genera recomendaciones precisas, evitando siempre los títulos que ya viste.</div>
+      </div>
+      <div class="reveal-fade" style="--reveal-delay:0.3s;">
+        <div class="step-num">03</div>
+        <div class="step-title">Leé, registrá y compartí</div>
+        <div class="step-desc">Agregá los libros a tu estante, escribí reseñas y compartí tus lecturas con la comunidad.</div>
       </div>
     </div>
   </div>
-  <div style="margin-top:3rem;">
-    <a href="/pages/discover.html" class="btn btn-primary btn-lg">Empezar ahora</a>
+</div>
+
+<!-- DARK CTA FOOTER SECTION -->
+<section class="section-dark">
+  <div style="max-width:1200px; margin:0 auto;">
+    <div class="section-header" style="border-bottom-color:rgba(247,246,241,0.12);">
+      <div class="ed-label">Empezá ahora</div>
+      <div class="section-header-right" style="color:rgba(247,246,241,0.3);">03 / 03</div>
+    </div>
+
+    <h2 class="ed-lg reveal" style="margin-bottom:2.5rem;">
+      Tu próxima<br>gran lectura<br><em style="font-family:var(--font-display); font-style:italic; font-weight:400; opacity:0.6;">te está esperando</em>
+    </h2>
+
+    <a href="/pages/discover.html" class="btn btn-lg reveal" style="background:#1488C4; color:#fff; border:none; --reveal-delay:0.2s;">
+      Descubrir libros gratis
+    </a>
+
+    <!-- Footer links -->
+    <div class="footer-editorial">
+      <div style="font-family:var(--font-editorial); font-size:clamp(1.5rem, 4vw, 2.5rem); font-weight:700; text-transform:uppercase; letter-spacing:-0.02em; color:rgba(247,246,241,0.15);">Verso</div>
+      <div class="footer-editorial-links">
+        <a href="/pages/discover.html" class="footer-editorial-link">Discover</a>
+        <a href="/pages/feed.html" class="footer-editorial-link">Feed</a>
+        <a href="/pages/login.html" class="footer-editorial-link">Sign in</a>
+        <a href="/pages/login.html?tab=register" class="footer-editorial-link">Join</a>
+      </div>
+      <div class="footer-editorial-copy">Inteligencia literaria · 2025</div>
+    </div>
   </div>
 </section>
-
-<footer class="footer">
-  <span class="footer-logo">V<em style="font-style:italic;">erso</em></span>
-  <span>Inteligencia literaria · 2025</span>
-</footer>
 
 <div class="toast-container" id="toast-container"></div>
 
 <script type="module">
   import { renderNav } from "/js/app.js";
   renderNav("");
+</script>
+
+<script>
+  // ── Service list accordion ──────────────────────────────────
+  document.querySelectorAll('.service-item').forEach(item => {
+    item.querySelector('.service-item-header').addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.service-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+    item.addEventListener('mouseenter', () => {
+      if (!item.classList.contains('open')) {
+        document.querySelectorAll('.service-item').forEach(i => i.classList.remove('open'));
+        item.classList.add('open');
+      }
+    });
+  });
+
+  // ── Scroll reveal ───────────────────────────────────────────
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in-view');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal, .reveal-fade').forEach(el => {
+    observer.observe(el);
+  });
 </script>
 </body>
 </html>
